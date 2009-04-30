@@ -1,0 +1,16 @@
+#summary HOWTO: Build snowflake-os
+
+= Introduction =
+
+This is a short run-down on how to build snowflake-os.
+
+Something to be aware of: build system is completely untested on anything but linux. If you're building on something else, you will get no where if you don't have a gcc/binutils toolchain capable of targeting i386-elf. You've been warned!
+
+= Details =
+
+Some pre-requisite software:
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
