@@ -1,16 +1,25 @@
-#summary HOWTO: Build snowflake-os
+#summary HOWTO: Building snowflake
 
 = Introduction =
 
-This is a short run-down on how to build snowflake-os.
+This is a short run-down on how to build snowflake.
 
 Something to be aware of: build system is completely untested on anything but linux. If you're building on something else, you will get no where if you don't have a gcc/binutils toolchain capable of targeting i386-elf. You've been warned!
 
 = Details =
 
 Some pre-requisite software:
+  * ocaml compiler tools
+  * findlib
+  * time
+  * a C toolchain targeting i386-elf
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+Once all that is installed, it should be as simple as typing make from the root of the project source.
+
+= Unsupported =
+
+Building snowflake is currently not supported on mac os x or windows. It might work on BSD flavours. I'm not sure if it's possible to use a cross compiler, since parts need to be compiled for the host system, and other parts for i386-elf.
+
+If you really get stuck, and are on an unsupported host operating system, I'd recommend setting up a virtual machine.
+
+If you have tips and/or like to submit a patch to be able to configure the build system with specific host and target toolchains to use, that'd be awesome.
