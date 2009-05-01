@@ -1,4 +1,5 @@
 #summary HOWTO: Building snowflake
+#labels Featured
 
 = Introduction =
 
