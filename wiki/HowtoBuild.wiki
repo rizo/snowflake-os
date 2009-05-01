@@ -31,6 +31,14 @@ Once you have your cross compiler, the steps look roughly like:
 
 If all goes well, you should have a snowflake.native which is the kernel. If everything goes really well, you should also have a snowflake.iso to boot!
 
+[http://www.wilcox-tech.com/opensource/snowflake-vbox-osx.png]
+
+Small lil note from the OS X guy, here.  You need mkisofs to make that ISO, and for that you need to compile [ftp://ftp.berlios.de/pub/cdrecord/alpha/cdrtools-beta.tar.gz CDRecord and friends].  It's really easy, just get the tarball, and type "make && sudo make install".  Note that whomever wrote the CDRecord Makefile told it to install to /opt/schily, so you either need to do
+ * {{{PATH=/path/to/i386-elf-toolchain/bin:/opt/schily:$PATH make}}}
+
+Or optionally you can do what I did and do:
+ * {{{sudo mv /opt/schily/bin/* /usr/bin/}}}
+
 = Unsupported =
 
 Building snowflake is currently not really supported on mac os x or windows. It might work on BSD flavours. I'm not sure if it's possible to use a cross compiler, since parts need to be compiled for the host system, and other parts for i386-elf.
