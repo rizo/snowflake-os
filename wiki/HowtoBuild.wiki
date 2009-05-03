@@ -20,14 +20,15 @@ Once all that is installed, it should be as simple as typing make from the root 
 
 = Mac OS X =
 
-Okies, there's a patch to make snowflake build on non-ELF hosts now.
+Okies, I've been nice and made the build system able to cope with non-ELF hosts.
 
 First off, you need to build an i386-elf cross compiler. Instructions can be found at http://m3os.wordpress.com/2009/03/29/tutorial-building-an-i386-elf-cross-compiler-and-binutils-on-os-x/.
 
 Once you have your cross compiler, the steps look roughly like:
-  # cd tools && make ocaml bitstring
-  # patch -Np0 -i building-on-osx.patch
-  # PATH=/path/to/i386-elf-toolchain/bin:$PATH make
+  # export TOOLSPREFIX=/path/to/your/cross-compiler/bin/i386-elf
+  # make
+
+For example, if you have the directory /usr/local/i386elf/bin which contains the following programs: i386-elf-gcc, i386-elf-as, and friends, then you would export TOOLSPREFIX=/usr/local/i386elf/bin/i386-elf. It will append "-gcc", "-as", and friends to TOOLSPREFIX and use these for building snowflake.
 
 If all goes well, you should have a snowflake.native which is the kernel. If everything goes really well, you should also have a snowflake.iso to boot!
 
