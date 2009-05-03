@@ -25,10 +25,10 @@ Okies, I've been nice and made the build system able to cope with non-ELF hosts.
 First off, you need to build an i386-elf cross compiler. Instructions can be found at http://m3os.wordpress.com/2009/03/29/tutorial-building-an-i386-elf-cross-compiler-and-binutils-on-os-x/.
 
 Once you have your cross compiler, the steps look roughly like:
-  # export TOOLSPREFIX=/path/to/your/cross-compiler/bin/i386-elf
-  # make
+  # `export TOOLSPREFIX=/path/to/your/cross-compiler/bin/i386-elf`
+  # `make`
 
-For example, if you have the directory /usr/local/i386elf/bin which contains the following programs: i386-elf-gcc, i386-elf-as, and friends, then you would export TOOLSPREFIX=/usr/local/i386elf/bin/i386-elf. It will append "-gcc", "-as", and friends to TOOLSPREFIX and use these for building snowflake.
+For example, if you have the directory *`/usr/local/i386elf/bin`* which contains the following programs: `i386-elf-gcc`, `i386-elf-as`, and friends, then you would export *`TOOLSPREFIX=/usr/local/i386elf/bin/i386-elf`*. It will append "-gcc", "-as", and friends to `TOOLSPREFIX` and use these for building snowflake.
 
 If all goes well, you should have a snowflake.native which is the kernel. If everything goes really well, you should also have a snowflake.iso to boot!
 
@@ -42,8 +42,8 @@ Or optionally you can do what I did and do:
 
 = Unsupported =
 
-Building snowflake is currently not really supported on mac os x or windows. It might work on BSD flavours. I'm not sure if it's possible to use a cross compiler, since parts need to be compiled for the host system, and other parts for i386-elf.
+Pretty much anything non-UNIX-like that you can't get an i386-elf cross-compiler working on (if required), or can't run ocamlopt toolchain.
 
-If you really get stuck, and are on an unsupported host operating system, I'd recommend setting up a virtual machine.
+Basically, I use Debian with ocaml-3.10. I've had confirmation it also works on OS X (10.5), also with ocaml-3.10. If you're trying with later versions of ocaml on your machine, and it doesn't work, then that currently falls under unsupported too.
 
-If you have tips and/or like to submit a patch to be able to configure the build system with specific host and target toolchains to use, that'd be awesome.
+If you're stuck, and really desperate to get it working, use a virtual machine. Works for me on my EeePC.
