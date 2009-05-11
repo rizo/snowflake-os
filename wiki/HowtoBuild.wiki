@@ -11,8 +11,6 @@ Something to be aware of: build system is completely untested on anything but li
 
 Some pre-requisite software:
   * ocaml compiler tools, preferrably 3.10.x, 3.11.x untested
-  * findlib
-  * time
   * mkisofs
   * a C toolchain targeting i386-elf
 
