@@ -13,7 +13,6 @@ Some pre-requisite software:
   * ocaml compiler tools, preferrably 3.10.x, 3.11.x untested
   * mkisofs
   * a C toolchain targeting i386-elf
-
 Once all that is installed, it should be as simple as typing make from the root of the project source.
 
 = Mac OS X =
@@ -37,7 +36,6 @@ Small lil note from the OS X guy, here.  You need mkisofs to make that ISO, and 
 
 Or optionally you can do what I did and do:
  * {{{sudo mv /opt/schily/bin/* /usr/bin/}}}
-
 = Unsupported =
 
 Pretty much anything non-UNIX-like that you can't get an i386-elf cross-compiler working on (if required), or can't run ocamlopt toolchain.
