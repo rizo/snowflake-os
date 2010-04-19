@@ -36,6 +36,10 @@ Small lil note from the OS X guy, here.  You need mkisofs to make that ISO, and 
 
 Or optionally you can do what I did and do:
  * {{{sudo mv /opt/schily/bin/* /usr/bin/}}}
+
+== Snow Leopard ==
+Another lil note from the Mac dude.  Snow Leopard and it's 64-bit-ness is pure evil from a Snowflake-building perspective.  I had to major-hack the ocaml code, build cdrtools three different times (each time for a different library/component), and get a zombie-spaghetti-mess of 32-bit and 64-bit binaries.  It isn't pretty at all.  If you really really *really really* want to build on Snow Leopard, open an issue and I might be able to tar up my Snowflake folder.  I can't provide instructions though.  Trust me, you wouldn't want them anyway.
+
 = Unsupported =
 
 Pretty much anything non-UNIX-like that you can't get an i386-elf cross-compiler working on (if required), or can't run ocamlopt toolchain.
