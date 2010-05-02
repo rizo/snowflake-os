@@ -3,50 +3,81 @@
 
 = Introduction =
 
-This is a short run-down on how to build snowflake.
+Beware mortal soul, building a kernel can be difficult enough. Snowflake likes to throw in a bunch more curlies into the process, so dun be too sad if it doesn't quite work.
 
-Something to be aware of: build system is completely untested on anything but linux. If you're building on something else, you will get no where if you don't have a gcc/binutils toolchain capable of targeting i386-elf. You've been warned!
+= Supported Host Systems =
+
+These have been confirmed working as at revision 208:
+  * linux 64-bit (32-bit _should_ work)
+  * mac os x 10.6 with cross-compiler
+  * freebsd 32-bit
 
 = Details =
 
 Some pre-requisite software:
-  * ocaml compiler tools, preferrably 3.10.x, 3.11.x untested
+  * gcc/binutils with support for i386-elf (need multilib support on 64-bit)
   * mkisofs
-  * a C toolchain targeting i386-elf
-Once all that is installed, it should be as simple as typing make from the root of the project source.
+  * make/patch/sed/grep/useful tools like that
+Once all that is installed, it should be as simple as typing `make` from the root of the project source.
 
 = Mac OS X =
 
-Okies, I've been nice and made the build system able to cope with non-ELF hosts.
+Building snowflake itself is almost as easy as building for everything else. It's just building the prerequisites first!
 
-First off, you need to build an i386-elf cross compiler. Instructions can be found at http://m3os.wordpress.com/2009/03/29/tutorial-building-an-i386-elf-cross-compiler-and-binutils-on-os-x/. You need to ensure that it creates binaries with a prefix of i386-elf.
+  # build a cross compiler
+  # build mkisofs
 
-Once you have your cross compiler, the steps look roughly like:
-  # `export TOOLSPREFIX=/path/to/your/cross-compiler/bin`
-  # `make prep-osx`
+== Building a Cross Compiler ==
+
+These steps are a modified version of http://m3os.wordpress.com/2009/03/29/tutorial-building-an-i386-elf-cross-compiler-and-binutils-on-os-x/. It is also assumed you have the latest XCode suite installed.
+
+Prerequisites:
+  # gmp: http://ftp.gnu.org/pub/gnu/gmp/gmp-4.3.2.tar.bz2
+  # mpfr: http://ftp.gnu.org/pub/gnu/mpfr/mpfr-2.4.2.tar.bz2
+  # mpc: http://www.multiprecision.org/mpc/download/mpc-0.8.1.tar.gz
+These can be built with typical `tar xjf xxx.tar.bz2; cd xxx; ./configure; make; sudo make install` (or `tar zxf xxx.tar.gz`).
+
+Then building your cross compiler:
+  # `mkdir crosstools && cd crosstools`
+  # `curl http://ftp.gnu.org/pub/gnu/binutils/binutils-2.20.tar.bz2 > binutils.tar.bz2`
+  # `tar xjf binutils.tar.bz2`
+  # `curl http://ftp.gnu.org/pub/gnu/gcc/gcc-4.5.0/gcc-4.5.0.tar.bz2 > gcc.tar.bz2`
+  # `tar xjf gcc.tar.bz2`
+  # `sudo mkdir /usr/local/cross`
+  # `sudo chmod 777 /usr/local/cross`
+  # `mkdir build-binutils && cd build-binutils`
+  # `../binutils-2.20/configure --target=i386-elf --prefix=/usr/local/cross`
+  # `make all install`
+  # `find . -name 'Makefile' | xargs sed -i -e 's/-Werror//g'`
+  # `make all install`
+  # `find . -name 'Makefile' | xargs sed -i -e 's/-Werror//g'`
+  # `make all install`
+  # `find . -name 'Makefile' | xargs sed -i -e 's/-Werror//g'`
+  # `make all install`
+  # `find . -name 'Makefile' | xargs sed -i -e 's/-Werror//g'`
+  # `make all install`
+  # `find . -name 'Makefile' | xargs sed -i -e 's/-Werror//g'`
+  # `make all install`
+  # `find . -name 'Makefile' | xargs sed -i -e 's/-Werror//g'`
+  # `make all install`
+  # `cd ..`
+  # `mkdir build-gcc && cd build-gcc`
+  # `../gcc-4.5.0/configure --target=i386-elf --prefix=/usr/local/cross  --with-gnu-as --with-gnu-ld --disable-libssp --enable-languages=c`
+  # `make all install
+The `find/sed` magic is to address an issue where it complains about format strings warning. It keeps generating new Makefiles as building progresses, hence why you need to run it a few times (think that's the right number).  
+
+== Building mkisofs ==
+
+Cdrtools can be obtained from http://cdrecord.berlios.de/old/private/cdrecord.html. The package ftp://ftp.berlios.de/pub/cdrecord/alpha/cdrtools-beta.tar.gz seems to work fine. Simply skip the configure step, and run `make; sudo make install`. It installs the tools in a weird location, so fix that too:
+
+  * `sudo mv /opt/schilly/bin/* /usr/bin/`
+
+== Building Snowflake ==
+
+Once you have your cross compiler and mkisofs, the steps are (if you used a different path to the instructions above, use that here instead):
+  # `export TOOLSPREFIX=/usr/local/cross/bin`
   # `make`
-
-For example, if you have the directory *`/usr/local/i386elf/bin`* which contains the following programs: `i386-elf-gcc`, `i386-elf-as`, and friends, then you would export *`TOOLSPREFIX=/usr/local/i386elf/bin`*. It will append "i386-elf-gcc", "i386-elf-as", and friends to `TOOLSPREFIX` and use these for building snowflake.
 
 If all goes well, you should have a snowflake.native which is the kernel. If everything goes really well, you should also have a snowflake.iso to boot!
 
 [http://www.wilcox-tech.com/opensource/snowflake-vbox-osx.png]
-
-Small lil note from the OS X guy, here.  You need mkisofs to make that ISO, and for that you need to compile [ftp://ftp.berlios.de/pub/cdrecord/alpha/cdrtools-beta.tar.gz CDRecord and friends].  It's really easy, just get the tarball, and type "make && sudo make install".  Note that whomever wrote the CDRecord Makefile told it to install to /opt/schily, so you either need to do
- * {{{PATH=/path/to/i386-elf-toolchain/bin:/opt/schily:$PATH make}}}
-
-Or optionally you can do what I did and do:
- * {{{sudo mv /opt/schily/bin/* /usr/bin/}}}
-
-== Snow Leopard ==
-Another lil note from the Mac dude.  Snow Leopard and it's 64-bit-ness is pure evil from a Snowflake-building perspective.  I had to major-hack the ocaml code, build cdrtools three different times (each time for a different library/component), and get a zombie-spaghetti-mess of 32-bit and 64-bit binaries.  It isn't pretty at all.  If you really really *really really* want to build on Snow Leopard, open an issue and I might be able to tar up my Snowflake folder.  I can't provide instructions though.  Trust me, you wouldn't want them anyway.
-
-Compiling now works on Snow Leopard without any extra special steps.
-
-= Unsupported =
-
-Pretty much anything non-UNIX-like that you can't get an i386-elf cross-compiler working on (if required), or can't run ocamlopt toolchain.
-
-Basically, I use Debian with ocaml-3.10. I've had confirmation it also works on OS X (10.5), also with ocaml-3.10. If you're trying with later versions of ocaml on your machine, and it doesn't work, then that currently falls under unsupported too.
-
-If you're stuck, and really desperate to get it working, use a virtual machine. Works for me on my EeePC.
