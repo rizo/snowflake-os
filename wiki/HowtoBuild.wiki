@@ -63,7 +63,7 @@ Then building your cross compiler:
   # `cd ..`
   # `mkdir build-gcc && cd build-gcc`
   # `../gcc-4.5.0/configure --target=i386-elf --prefix=/usr/local/cross  --with-gnu-as --with-gnu-ld --disable-libssp --enable-languages=c`
-  # `make all install
+  # `make all install`
 The `find/sed` magic is to address an issue where it complains about format strings warning. It keeps generating new Makefiles as building progresses, hence why you need to run it a few times (think that's the right number).  
 
 == Building mkisofs ==
