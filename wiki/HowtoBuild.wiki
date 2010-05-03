@@ -9,7 +9,7 @@ Beware mortal soul, building a kernel can be difficult enough. Snowflake likes t
 
 These have been confirmed working as at revision 208:
   * linux 64-bit (32-bit _should_ work)
-  * mac os x 10.6 with cross-compiler
+  * mac os x 10.5/10.6 with cross-compiler (requires XCode 3.2.2)
   * freebsd 32-bit
 
 = Details =
@@ -39,32 +39,23 @@ These can be built with typical `tar xjf xxx.tar.bz2; cd xxx; ./configure; make;
 
 Then building your cross compiler:
   # `mkdir crosstools && cd crosstools`
-  # `curl http://ftp.gnu.org/pub/gnu/binutils/binutils-2.20.tar.bz2 > binutils.tar.bz2`
+  # `curl http://ftp.gnu.org/pub/gnu/binutils/binutils-2.20.1.tar.bz2 > binutils.tar.bz2`
   # `tar xjf binutils.tar.bz2`
   # `curl http://ftp.gnu.org/pub/gnu/gcc/gcc-4.5.0/gcc-4.5.0.tar.bz2 > gcc.tar.bz2`
   # `tar xjf gcc.tar.bz2`
   # `sudo mkdir /usr/local/cross`
   # `sudo chmod 777 /usr/local/cross`
   # `mkdir build-binutils && cd build-binutils`
-  # `../binutils-2.20/configure --target=i386-elf --prefix=/usr/local/cross`
-  # `make all install`
-  # `find . -name 'Makefile' | xargs sed -i -e 's/-Werror//g'`
-  # `make all install`
-  # `find . -name 'Makefile' | xargs sed -i -e 's/-Werror//g'`
-  # `make all install`
-  # `find . -name 'Makefile' | xargs sed -i -e 's/-Werror//g'`
-  # `make all install`
-  # `find . -name 'Makefile' | xargs sed -i -e 's/-Werror//g'`
-  # `make all install`
-  # `find . -name 'Makefile' | xargs sed -i -e 's/-Werror//g'`
-  # `make all install`
+  # `../binutils-2.20.1/configure --target=i386-elf --prefix=/usr/local/cross`
+  # `make -j 3 all`
+  # `find . -name 'Makefile.in' | xargs sed -i -e 's/-Werror//g'`
   # `find . -name 'Makefile' | xargs sed -i -e 's/-Werror//g'`
   # `make all install`
   # `cd ..`
   # `mkdir build-gcc && cd build-gcc`
   # `../gcc-4.5.0/configure --target=i386-elf --prefix=/usr/local/cross  --with-gnu-as --with-gnu-ld --disable-libssp --enable-languages=c`
   # `make all install`
-The `find/sed` magic is to address an issue where it complains about format strings warning. It keeps generating new Makefiles as building progresses, hence why you need to run it a few times (think that's the right number).  
+The `find/sed` magic is to address an issue where it complains about format strings warning.  
 
 == Building mkisofs ==
 
